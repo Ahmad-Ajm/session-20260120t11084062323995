@@ -23,7 +23,7 @@
 
 | FeatureId | FeatureName | FeatureType | Summary | Personas | SpecFolders | Priority | Status |
 |---|---|---|---|---|---|---|---|
-| FEAT-001 | UX/UI (Baseline/System) | UX | أساسيات التصميم/الهيكل/التنقل + i18n scaffolding | All | psec-kit-file/FEAT-001 | P0 | Planned |
+| FEAT-001 | UX/UI (Baseline/System) | UX | أساسيات التصميم/الهيكل/التنقل + i18n scaffolding | All | psec-kit-file/FEAT-001 | P0 | InProgress (CodeDone / CI-Blocked) |
 | FEAT-002 | Landing Page | Landing | صفحة هبوط + أقسام تعريفية + CTA للتسجيل/الدخول | Guest | psec-kit-file/FEAT-002 | P0 | Planned |
 | FEAT-003 | Email Auth (Register/Login) | Security | تسجيل ودخول عبر البريد/كلمة المرور | User | psec-kit-file/FEAT-003 | P0 | Planned |
 | FEAT-004 | Email Verification | Security | تحقق البريد وإدارة حالة التحقق | User, Admin | psec-kit-file/FEAT-004 | P0 | Planned |
