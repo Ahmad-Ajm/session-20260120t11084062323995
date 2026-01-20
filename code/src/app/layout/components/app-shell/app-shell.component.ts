@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { TopbarComponent } from '../topbar/topbar.component';
@@ -12,4 +12,10 @@ import { FooterComponent } from '../footer/footer.component';
   templateUrl: './app-shell.component.html',
   styleUrl: './app-shell.component.scss',
 })
-export class AppShellComponent {}
+export class AppShellComponent {
+  @ViewChild(SidebarComponent) private sidebar?: SidebarComponent;
+
+  onMenuClick(): void {
+    this.sidebar?.toggleMobile();
+  }
+}
