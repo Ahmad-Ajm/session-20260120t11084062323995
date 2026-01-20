@@ -3,9 +3,7 @@
     "Name": "Projment"
   },
   "Nav": {
-    "Landing": "Landing",
-    "Login": "Login",
-    "Register": "Register",
+    "Home": "Home",
     "Dashboard": "Dashboard"
   },
   "Lang": {
@@ -13,26 +11,23 @@
     "Arabic": "Arabic"
   },
   "Common": {
-    "Welcome": "Welcome",
+    "Home": "Home",
+    "Dashboard": "Dashboard",
     "NotFound": "Page not found",
-    "GoHome": "Go to landing"
+    "GoHome": "Go to home"
   },
   "Pages": {
-    "Landing": {
-      "Title": "Landing",
-      "Description": "This is a placeholder landing page."
-    },
-    "Login": {
-      "Title": "Login",
-      "Description": "This is a placeholder login page."
-    },
-    "Register": {
-      "Title": "Register",
-      "Description": "This is a placeholder register page."
+    "Home": {
+      "Title": "Home",
+      "Description": "This is a placeholder home page."
     },
     "Dashboard": {
       "Title": "Dashboard",
       "Description": "This is a placeholder dashboard page (inside app shell)."
+    },
+    "NotFound": {
+      "Title": "Not Found",
+      "Description": "The page you are looking for does not exist."
     }
   }
 }
