@@ -1,0 +1,38 @@
+{
+  "App": {
+    "Name": "Projment"
+  },
+  "Nav": {
+    "Landing": "Landing",
+    "Login": "Login",
+    "Register": "Register",
+    "Dashboard": "Dashboard"
+  },
+  "Lang": {
+    "English": "English",
+    "Arabic": "Arabic"
+  },
+  "Common": {
+    "Welcome": "Welcome",
+    "NotFound": "Page not found",
+    "GoHome": "Go to landing"
+  },
+  "Pages": {
+    "Landing": {
+      "Title": "Landing",
+      "Description": "This is a placeholder landing page."
+    },
+    "Login": {
+      "Title": "Login",
+      "Description": "This is a placeholder login page."
+    },
+    "Register": {
+      "Title": "Register",
+      "Description": "This is a placeholder register page."
+    },
+    "Dashboard": {
+      "Title": "Dashboard",
+      "Description": "This is a placeholder dashboard page (inside app shell)."
+    }
+  }
+}
