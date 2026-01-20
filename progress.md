@@ -9,7 +9,7 @@
 
 | Feature | clarify | plan | specify | analyze | tasks | SpecKit Status | Build-App Status | CI |
 |---|---|---|---|---|---|---|---|---|
-| FEAT-001 | Done | Done | Done | Done | Done | Done | CodeDone | Blocked(CI tool / GitHub Actions access) |
+| FEAT-001 | Done | Done | Done | Done | Done | Done | CodeDone | Blocked (CI workflow dispatch tool says: Workflow does not exist) |
 
 ---
 
@@ -50,28 +50,26 @@
 ## ✅ ما تم إنجازه (Attempt 3)
 - إعادة تشغيل Build-App على FEAT-001 وتأكد أن **تنفيذ FEAT-001 موجود فعليًا داخل `code/`** (Layout + Routing + i18n + RTL/LTR + persistence).
 - المشكلة الحالية لم تعد DNS: أصبح العائق في **تشغيل/فحص CI** عبر الأداة.
-- محاولات CI عبر أداة `CI_RUN_AND_INSPECT` فشلت تسلسليًا:
-  1) `No run_id found` (dispatch delayed/عدم القدرة على إيجاد الـ run)
-  2) `GitHub REST API returned 404 Not Found` (غالبًا صلاحيات token أو repo/endpoint)
-  3) أداة رجعت: `JSON Output contains invalid JSON` (خلل parsing/تجميع contract داخل فلو CI)
-- تشخيص `github-ci-orchestrator` أكد:
-  - عقدة داخل n8n تُنتج JSON غير صالح (Set: AI Decision Contract) وتمنع اكتمال الفلو.
-  - حتى بعد إصلاح عقدة JSON: يوجد فشل CI فعلي بسبب إعداد workflow: `cache-dependency-path: code/package-lock.json` (المسار غير موجود).
+
+## ✅ ما تم إنجازه (Attempt 4)
+- أصلحت إعداد GitHub Actions workflow لتجنب فشل cache بسبب عدم وجود `package-lock.json`:
+  - أزلت `cache-dependency-path`.
+  - استبدلت `npm ci` بـ `npm install`.
+- حاولت تشغيل `CI_RUN_AND_INSPECT` لـ FEAT-001/Attempt 4 لكن الأداة رجعت: **"Workflow does not exist."**
 
 ---
 
 ## ⚠️ العوائق الحالية
-- **CI Blocked** بسبب مشاكل في فلو/أداة CI (invalid JSON) و/أو صلاحيات GitHub Actions API (404) + إعداد workflow يحتاج تصحيح لمسار `package-lock.json`.
+- CI Blocked بسبب أداة تشغيل CI لا تجد workflow (قد يكون اسم/مسار workflow أو إعدادات الأداة).
 
 ---
 
 ## ⏭️ الخطوة التالية (مباشرة)
-1) إصلاح فلو `github-ci-orchestrator` (عقدة Set JSON) أو تشغيل CI بطريقة بديلة.
-2) مراجعة `.github/workflows/ci.yml` لتصحيح `cache-dependency-path` ليتوافق مع بنية المشروع (أو تعطيل cache-dependency-path).
-3) إعادة تشغيل CI ثم اعتماد FEAT-001 كمكتملة.
+1) التحقق من سبب رسالة "Workflow does not exist" (غالبًا الأداة تبحث عن workflow id/filename مختلف).
+2) تشغيل تشخيص لفلو `github-ci-orchestrator` أو تعديل الأداة لتستخدم path الصحيح `.github/workflows/ci.yml`.
 
 ---
 
 ## 🔄 آخر تحديث
 - التاريخ: 2026-01-20
-- Attempt: 3
+- Attempt: 4
