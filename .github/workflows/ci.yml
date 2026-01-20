@@ -32,11 +32,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: '${{ env.FRONTEND_DIR }}/package-lock.json'
+          # cache-dependency-path removed because lockfile may be absent.
 
       - name: Install dependencies
         working-directory: ${{ env.FRONTEND_DIR }}
-        run: npm ci
+        run: npm install
 
       - name: Lint (if configured)
         working-directory: ${{ env.FRONTEND_DIR }}
