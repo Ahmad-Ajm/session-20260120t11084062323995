@@ -1,0 +1,21 @@
+<header class="topbar" role="banner">
+  <div class="topbar__brand">
+    <button class="icon-btn topbar__menu" type="button" (click)="menuClick.emit()" aria-label="Menu">
+      <span aria-hidden="true">☰</span>
+    </button>
+
+    <div class="topbar__logo" aria-hidden="true">P</div>
+    <div class="topbar__name">{{ 'App.Name' | translate }}</div>
+  </div>
+
+  <div class="topbar__actions">
+    <button class="btn" type="button" (click)="toggleLanguage()">
+      <span class="badge">{{ currentLanguage.toUpperCase() }}</span>
+      <span class="topbar__langLabel">
+        {{ (currentLanguage === 'en' ? 'Lang.Arabic' : 'Lang.English') | translate }}
+      </span>
+    </button>
+
+    <div class="badge">User</div>
+  </div>
+</header>
