@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI
 
 on:
   push:
@@ -7,72 +7,45 @@ on:
     branches: [ main ]
   workflow_dispatch:
     inputs:
-      featureKey: 
+      featureKey:
         description: 'The feature key to run CI for (e.g., FEAT-123)'
         required: true
         type: string
-      attempt: 
+      attempt:
         description: 'The attempt number for this CI run'
         required: true
         type: string
 
 env:
-  DOTNET_VERSION: '8.0.x'
   NODE_VERSION: '18.x'
-  BACKEND_DIR: 'code/backend'
-  FRONTEND_DIR: 'code'  # adjusted because there is no code/frontend directory
+  FRONTEND_DIR: 'code'
 
 jobs:
   build-test:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: '${{ env.FRONTEND_DIR }}/package-lock.json'
 
-    - name: Restore backend dependencies
-      run: |
-        cd ${{ env.BACKEND_DIR }}
-        dotnet restore ./CVSystem.sln
+      - name: Install dependencies
+        working-directory: ${{ env.FRONTEND_DIR }}
+        run: npm ci
 
-    - name: Build backend
-      run: |
-        cd ${{ env.BACKEND_DIR }}
-        dotnet build ./CVSystem.sln --no-restore
+      - name: Lint (if configured)
+        working-directory: ${{ env.FRONTEND_DIR }}
+        run: npm run -s lint --if-present
 
-    - name: Test backend
-      run: |
-        cd ${{ env.BACKEND_DIR }}
-        dotnet test ./CVSystem.sln --no-build --verbosity normal || echo "No backend tests found, skipping."
+      - name: Test
+        working-directory: ${{ env.FRONTEND_DIR }}
+        run: npm test -- --watch=false
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-
-    - name: Install frontend dependencies
-      run: |
-        cd ${{ env.FRONTEND_DIR }}
-        npm ci || echo "No frontend project found, skipping npm ci."
-
-    - name: Build frontend
-      run: |
-        cd ${{ env.FRONTEND_DIR }}
-        npm run build || echo "No frontend build script found, skipping build."
-
-    - name: Update progress report
-      run: |
-        FEATURE_KEY="${{ github.event.inputs.featureKey }}"
-        ATTEMPT="${{ github.event.inputs.attempt }}"
-        REPORT_FILE="psec-kit-file/${FEATURE_KEY}/PROGRESS_REPORT.md"
-
-        if [ -f "$REPORT_FILE" ]; then
-          echo "CI Run for Feature $FEATURE_KEY, Attempt $ATTEMPT: SUCCESS or completed with warnings" >> "$REPORT_FILE"
-        else
-          echo "Progress report file not found at $REPORT_FILE. Skipping update." 
-        fi
-      shell: bash
+      - name: Build
+        working-directory: ${{ env.FRONTEND_DIR }}
+        run: npm run -s build
