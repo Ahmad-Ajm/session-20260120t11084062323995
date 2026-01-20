@@ -1,34 +1,36 @@
 # FEAT-001 – UX/UI (Baseline/System) – Analysis
 
 ## Context
-هذه الميزة تؤسس طبقة UI baseline التي ستبنى عليها بقية الميزات. المطلوب scaffolding عملي وليس تصميم نهائي.
+الميزة FEAT-001 هي أساس واجهة Projment، وتُستخدم كاعتماد (Dependency) لمعظم الميزات اللاحقة. المطلوب “Scaffolding” عملي: Layout/Routing/i18n/RTL بدون منطق أعمال أو صفحات فعلية للميزات.
 
 ## Key Constraints
-- Stack إلزامي: ABP + Angular.
-- دعم العربية والإنجليزية مع RTL/LTR.
-- عدم التوسع في ميزات أخرى (Landing/Auth/Profile/…)
+- Stack إلزامي: C# + ABP + Angular (مع ABP default theme كبداية).
+- دعم عربي/إنجليزي مع RTL/LTR.
+- عدم بناء أي features أخرى ضمن هذا النطاق (فقط placeholders).
 
 ## UX/IA Notes
-- فصل منطقتين في routing:
-  - Public: صفحات عامة (حالياً placeholders فقط)
-  - App area: صفحات داخلية داخل shell layout
-- Navigation يجب أن يكون قابلاً للتوسع لاحقاً بحسب account type والـ permissions.
+- فصل منطقي للـ routes:
+  - Public: `/` (placeholder فقط حاليًا)
+  - App area: `/app/...` داخل Shell layout (يمثل ما بعد الدخول لاحقًا)
+- Navigation baseline يجب أن تكون قابلة للتوسع لاحقًا (حسب persona/account type/permissions) بدون إعادة بناء.
 
 ## Technical Approach
-- إنشاء `LayoutModule` يضم Shell components.
-- تعريف routes مع placeholder pages.
+- الاستفادة من قالب ABP Angular قدر الإمكان:
+  - إن كان ABP template يوفر Layout جاهز، يتم **تغليفه/توسيعه** بدل إنشاء بديل متعارض.
+  - إن لم يوفر، يتم إنشاء `LayoutModule` ومكونات Shell.
 - i18n:
-  - ملفات `assets/i18n/en.json` و `assets/i18n/ar.json`
-  - استخدام pipe `| translate` في القوالب.
-- RTL:
-  - خدمة واحدة مسئولة عن تطبيق `dir/lang` وتخزين اللغة.
-  - CSS minimal fixes لتوافق sidebar.
+  - استخدام ABP localization (ngx-translate) مع ملفات JSON للمفاتيح الخاصة بالتطبيق.
+- RTL/LTR:
+  - تطبيق اتجاه الصفحة عبر `document.documentElement.dir`.
+  - الإبقاء على CSS overrides محدودة لتفادي كسر الـ theme.
 
 ## Edge Cases
-- مستخدم يبدّل اللغة ثم يعيد تحميل الصفحة: يجب استرجاع اللغة.
-- مسارات غير معروفة: fallback إلى NotFound.
-- اختلافات ABP template: قد تكون هناك بنية جاهزة للـ Layout؛ يجب دمج العمل معها بدل ازدواجية.
+- حفظ اللغة وإعادة تطبيقها بعد reload.
+- اختلاف نسخة ABP/Angular قد يغيّر:
+  - مواقع ملفات الترجمة
+  - بنية الـ modules والـ routes
+- RTL: بعض مكونات الـ theme قد تحتاج overrides إضافية (تُؤجل إلى حين ظهور المشكلة).
 
-## Open Questions (للتأكيد من Orchestrator إن لزم)
-- هل نحتاج لغة افتراضية `ar` بدل `en` للسوق السعودي؟ (حاليًا افتراض en مع fallback للمتصفح.)
-- هل نرغب بإظهار toggle اللغة في Public و App area معاً؟ (حاليًا نعم داخل Topbar في shell؛ للـ public يمكن reuse.)
+## Open Questions (لـ Orchestrator إذا لزم)
+- هل اللغة الافتراضية المطلوبة للسوق المستهدف هي `ar` بدل `en`؟ (حالياً: saved > browser(ar) > en)
+- هل نحتاج language switcher أيضاً في صفحة `/` العامة (public) أم يكفي داخل shell؟ (حالياً: داخل topbar في shell، ويمكن إعادة استخدامه لاحقاً في landing)
