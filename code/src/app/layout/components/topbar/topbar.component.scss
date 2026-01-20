@@ -17,6 +17,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
 
 .topbar__logo {
@@ -32,10 +33,43 @@
 
 .topbar__name {
   font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .topbar__actions {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.topbar__langLabel {
+  color: var(--muted);
+  font-size: 13px;
+  margin-inline-start: 8px;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.topbar__menu {
+  display: none;
+}
+
+@media (max-width: 991.98px) {
+  .topbar__menu {
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .topbar__langLabel {
+    display: none;
+  }
 }
