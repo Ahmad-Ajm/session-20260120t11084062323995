@@ -3,9 +3,7 @@
     "Name": "بروجمنت"
   },
   "Nav": {
-    "Landing": "الرئيسية",
-    "Login": "تسجيل الدخول",
-    "Register": "إنشاء حساب",
+    "Home": "الرئيسية",
     "Dashboard": "لوحة التحكم"
   },
   "Lang": {
@@ -13,26 +11,23 @@
     "Arabic": "العربية"
   },
   "Common": {
-    "Welcome": "مرحبًا",
+    "Home": "الرئيسية",
+    "Dashboard": "لوحة التحكم",
     "NotFound": "الصفحة غير موجودة",
     "GoHome": "العودة للرئيسية"
   },
   "Pages": {
-    "Landing": {
+    "Home": {
       "Title": "الرئيسية",
-      "Description": "هذه صفحة Placeholder للواجهة العامة."
-    },
-    "Login": {
-      "Title": "تسجيل الدخول",
-      "Description": "هذه صفحة Placeholder لتسجيل الدخول."
-    },
-    "Register": {
-      "Title": "إنشاء حساب",
-      "Description": "هذه صفحة Placeholder لإنشاء حساب."
+      "Description": "هذه صفحة Placeholder للصفحة الرئيسية."
     },
     "Dashboard": {
       "Title": "لوحة التحكم",
       "Description": "هذه صفحة Placeholder للوحة التحكم (داخل الـ Shell)."
+    },
+    "NotFound": {
+      "Title": "غير موجود",
+      "Description": "الصفحة التي تبحث عنها غير موجودة."
     }
   }
 }
