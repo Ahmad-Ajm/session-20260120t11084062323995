@@ -1,8 +1,8 @@
 # Implementation Plan – FEAT-001
 
 ## 1. Executive Summary
-- تنفيذ Baseline للواجهة (Angular + ABP) عبر إنشاء Shell Layout قابل لإعادة الاستخدام، تأسيس نظام Routing، وتهيئة i18n عربي/إنجليزي مع RTL/LTR.
-- لا يوجد عمل Backend جوهري لهذه الميزة؛ يقتصر الأمر على إعدادات Frontend وبعض إعدادات host إن لزم (مثل توفير ملفات ترجمة).
+- تنفيذ Baseline لواجهة Angular ضمن ABP: Layout موحّد + Routing أساسي + i18n عربي/إنجليزي + دعم RTL/LTR.
+- لا توجد مخرجات Backend لهذه الميزة؛ العمل يتركز في Frontend (مع احترام بنية ABP).
 
 ## 2. Architecture & Components
 
@@ -15,88 +15,86 @@
   - لا يوجد.
 - **HTTP API**:
   - لا يوجد.
-- **ملاحظات**:
-  - إن كانت ABP localization تعتمد على موارد من السيرفر، نكتفي بالموارد الافتراضية ونضيف موارد UI في Angular (الأولوية: UI scaffolding).
 
 ### Frontend (Angular)
-- **Modules**:
-  - `AppModule` (كما في ABP template)
-  - `CoreModule` (إن لم يكن موجودًا) لتجميع الخدمات العامة.
-  - `LayoutModule` (جديد): مكونات الـ Shell + navigation.
-  - `PublicModule` (اختياري/placeholder): مسارات عامة.
-  - `AppAreaModule` (اختياري/placeholder): مسارات داخلية بعد الدخول.
+- **Modules** (قد تختلف المسارات حسب قالب ABP المولد):
+  - `CoreModule` (لخدمات مشتركة مثل اللغة/الاتجاه).
+  - `LayoutModule` (جديد): يجمع Shell components و navigation.
+  - `PagesModule` أو مجلد صفحات: placeholders.
+
+- **Pages/Routes**:
+  - `/` -> `HomePlaceholderComponent`.
+  - `/app/dashboard` -> داخل `AppShellComponent`.
+  - `/not-found` -> `NotFoundComponent`.
+  - `**` -> redirect إلى `/not-found`.
+
+- **Shared UI Components**:
+  - `AppShellComponent`: Topbar + Sidebar + Content.
+  - `TopbarComponent`: شعار/اسم التطبيق + Language switcher + (placeholder) user menu.
+  - `SidebarComponent`: قائمة التنقل.
+  - `FooterComponent` (اختياري): تذييل بسيط.
 
 - **Core Services**:
-  - `UiLanguageService`: إدارة اللغة/الاتجاه.
-  - `NavService` (أو ملف ثابت): تعريف عناصر القائمة.
+  - `UiLanguageService`:
+    - قراءة اللغة الافتراضية (saved > browser > default).
+    - تطبيق `documentElement.lang/dir`.
+    - بث `language$` للاشتراك.
+  - `NavService` أو ملف ثابت `nav-items.ts`: `NavItem[]`.
 
-- **Components**:
-  - `AppShellComponent`: الحاوية العامة (Topbar + Sidebar + RouterOutlet).
-  - `TopbarComponent`: شعار + زر تبديل اللغة + (Placeholder) user menu.
-  - `SidebarComponent`: قائمة تنقل.
-  - `NotFoundComponent`.
-  - `HomePlaceholderComponent`.
-  - `DashboardPlaceholderComponent`.
+- **i18n Resources**:
+  - `assets/i18n/en.json`
+  - `assets/i18n/ar.json`
+  - مفاتيح للـ layout والتنقل والـ placeholders.
 
-- **Routing**:
-  - `''` -> `HomePlaceholderComponent` أو إعادة توجيه.
-  - `'app'` -> `AppShellComponent` يحوي children مثل `dashboard`.
-  - `'not-found'`.
-  - `'**'` -> redirect to `not-found`.
-
-- **i18n**:
-  - ملفات ترجمة JSON:
-    - `assets/i18n/en.json`
-    - `assets/i18n/ar.json`
-  - إضافة مفاتيح مشتركة للـ Layout (AppName, Navigation, Language…)
-
-- **RTL/LTR**:
-  - عند تغيير اللغة:
-    - `document.documentElement.lang = currentLang`
-    - `document.documentElement.dir = rtl|ltr`
-  - إضافة CSS للـ sidebar alignment و spacing عند RTL.
+- **RTL/LTR Styles**:
+  - تعديلات CSS بسيطة (SCSS) لتوافق sidebar/padding/align.
 
 ## 3. Data Model Definition
-- لا يوجد Entities/DTOs ضمن هذه الميزة.
+```text
+N/A (UI scaffolding only)
+```
 
 ## 4. FR-to-Implementation Mapping
 | FR ID | Backend Components | Frontend Components |
 |-------|--------------------|---------------------|
-| FR-FEAT-001-001 | N/A | LayoutModule + AppShellComponent + Topbar/Sidebar |
-| FR-FEAT-001-002 | N/A | AppRoutingModule + placeholder pages + NotFound |
-| FR-FEAT-001-003 | N/A | i18n JSON + language switcher + UiLanguageService |
-| FR-FEAT-001-004 | N/A | RTL/LTR dir/lang update + styles fixes |
+| FR-FEAT-001-001 | N/A | LayoutModule + AppShell + Topbar/Sidebar |
+| FR-FEAT-001-003 | N/A | AppRoutingModule + NotFound + placeholders |
+| FR-FEAT-001-004 | N/A | i18n JSON + translate usage in layout |
+| FR-FEAT-001-005 | N/A | UiLanguageService + language switcher |
+| FR-FEAT-001-006 | N/A | dir/lang switching + RTL fixes |
 
 ## 5. Implementation Phases
 
-### Phase 1: Frontend Skeleton
-1. التأكد من عمل مشروع ABP Angular و تشغيله.
-2. إنشاء `LayoutModule` ومكونات shell الأساسية.
-3. إضافة صفحات placeholder و routing.
+### Phase 1: Skeleton (Layout + Routing)
+1. تشغيل مشروع Angular (ABP) والتحقق من البناء.
+2. إنشاء LayoutModule ومكونات Shell.
+3. إنشاء صفحات placeholder.
+4. ربط Routing (including NotFound + wildcard).
+5. ربط sidebar navigation بعناصر placeholder.
 
 ### Phase 2: i18n + RTL/LTR
-1. إضافة ملفات ترجمة `en/ar`.
-2. بناء `UiLanguageService` (set/get/observe) وتخزين التفضيل.
-3. تطبيق تغيير `dir/lang` وربط زر التبديل.
-4. إضافة CSS لRTL (حد أدنى).
+1. إضافة ملفات ترجمة en/ar.
+2. إضافة `UiLanguageService` + persistence.
+3. إضافة Language switcher في Topbar.
+4. تطبيق `dir/lang` على مستوى document.
+5. إضافة CSS fixes مبدئية لـ RTL.
 
 ### Phase 3: Polish
-1. تحسين responsive behavior (Sidebar collapsible/drawer).
-2. توثيق مكان إضافة عناصر قائمة مستقبلًا.
-3. مراجعة lint/build.
+1. تحسين responsive behavior للـ sidebar (collapsible/drawer).
+2. تنظيف/تنظيم structure لتسهيل إدخال ميزات لاحقًا.
+3. تشغيل lint/build وإصلاح المشاكل.
 
 ## 6. Non-Functional Implementation
-- **Security**: لا يضيف هذا العمل سطح API جديد؛ الالتزام بإعدادات ABP الافتراضية للـ Angular.
-- **Performance**: استخدام lazy-loading للموديولات إن كانت بنية ABP جاهزة لذلك؛ placeholders فقط الآن.
+- **Security**: لا تغيير.
+- **Performance**: الحفاظ على routing بسيط؛ lazy-load عند الحاجة لاحقًا.
 - **Testing**:
-  - فحص يدوي للـ Routing + تبديل اللغة + RTL.
-  - (اختياري) unit tests بسيطة لـ `UiLanguageService`.
+  - تحقق يدوي للـ routing/i18n/RTL.
+  - (اختياري) unit test بسيط لـ `UiLanguageService`.
 
 ## 7. Dependencies & Risks
-- الاعتماد على قالب ABP Angular الافتراضي (قد تختلف أسماء المجلدات حسب النسخة).
-- خطر تضارب RTL مع CSS framework؛ نخففه بتغييرات محدودة ومرحلية.
+- اختلاف هيكل ABP Angular template بين الإصدارات (أسماء المجلدات/الـ modules).
+- RTL قد يتطلب tweaks إضافية حسب CSS framework المستخدم داخل template.
 
 ## 8. Assumptions
-- Angular داخل ABP template جاهز ويستخدم ngx-translate/ABP localization.
-- لا توجد متطلبات تصميم نهائي؛ المطلوب scaffolding.
-- سيتم لاحقًا إدخال عناصر menu بناءً على الـ roles/permissions.
+- ABP Angular template مُجهّز بـ localization (ngx-translate عبر ABP).
+- المطلوب في هذه المرحلة placeholders فقط بدون منطق أعمال.
