@@ -9,7 +9,7 @@
 
 | Feature | clarify | plan | specify | analyze | tasks | SpecKit Status | Build-App Status | CI |
 |---|---|---|---|---|---|---|---|---|
-| FEAT-001 | InProgress | InProgress | InProgress | InProgress | InProgress | InProgress | Partial/Blocked(Network) | NotRun |
+| FEAT-001 | Done | Done | Done | Done | Done | Done | Blocked(Network/DNS -> max iterations) | NotRun |
 
 ---
 
@@ -41,21 +41,27 @@
   - `code/src/app/layout/components/sidebar/sidebar.component.ts`
   - `code/src/app/pages/home/home.component.html`
 
+## ✅ ما تم إنجازه (Attempt 2)
+- تأكدت أن SpecKit لميزة FEAT-001 مكتمل: `clarify/plan/specify/analyze/tasks` = Done.
+- إعادة تشغيل Build-App لميزة FEAT-001 لإكمال ملفات الواجهة.
+- Build-App توقف برسالة: `Agent stopped due to max iterations`.
+- تشخيص الفلو أكد أن السبب الجذري ما يزال شبكة/DNS: `getaddrinfo EAI_AGAIN api.github.com` أثناء خطوة جلب الملفات من GitHub داخل Build-App، مما يدفع الـAgent لمحاولات متكررة حتى الوصول لحد التكرارات.
+
 ---
 
 ## ⚠️ العوائق الحالية
-- فلو Build-App أعاد: `The workflow did not return a response` أثناء `github_write_files`.
-- التشخيص السابق أظهر خطأ DNS مؤقت `EAI_AGAIN api.github.com`.
+- انقطاع/خلل DNS مؤقت يمنع Build-App من قراءة/كتابة ملفات GitHub بشكل موثوق.
+- نتيجة ذلك: توقف Build-App وعدم القدرة على إكمال FEAT-001 في هذا التشغيل.
 
 ---
 
 ## ⏭️ الخطوة التالية (مباشرة)
-1) إعادة تشغيل **Build-App** على FEAT-001 لإكمال كتابة بقية ملفات الواجهة (topbar/footer/pages/styles).
-2) بعد اكتمال الكتابة: تشغيل CI (فقط عند عدم وجود تقرير واضح من Build-App).
-3) تحديث progress.md بالنتيجة.
+1) إعادة المحاولة لاحقًا لتشغيل Build-App على FEAT-001 عند استقرار DNS.
+2) أو تنفيذ إصلاح سريع في فلو Build-App: retries/backoff + fail-fast عند أخطاء الشبكة.
+3) بعد اكتمال كتابة ملفات FEAT-001: تشغيل CI (إن لم يقدّم Build-App تقرير نجاح واضح).
 
 ---
 
 ## 🔄 آخر تحديث
 - التاريخ: 2026-01-20
-- Attempt: 1
+- Attempt: 2
