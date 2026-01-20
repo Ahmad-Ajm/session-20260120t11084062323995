@@ -1,165 +1,77 @@
 # Features Map – Project Feature Inventory
 
-هذا الملف هو الخريطة المركزية لجميع الميزات (Features / Epics) في المشروع.
-الهدف منه:
+خريطة الميزات (Features / Epics) للمشروع **Projment**.
 
-- إعطاء صورة واضحة عن **كل ميزة**: ماذا تفعل؟ لمن؟ وأين توجد مواصفاتها؟
-- ربط كل ميزة بنوعها **FeatureType** لاختيار قالب الـ KPI والـ Prompt المناسب.
-- أن يكون نقطة البداية لأي عمل جديد على الميزات (Spec Kit, Feature Factory, Testing).
-
-## Feature Types & KPI Templates
-
-لكل ميزة يتم تحديدها في جدول الـ Features يجب تعيين قيمة **FeatureType** بدقة.  
-ويتم استخدام **قوالب KPI Templates المتخصصة** لضمان جودة ثابتة لكل نوع من الميزات.
+> مصدر الحقيقة للمواصفات الوظيفية: `conversation-summary.md` (لا يتم تعديله).
 
 ---
 
-## 1. أنواع الميزات (FeatureType)
-
-استخدم أحد القيم التالية في عمود `FeatureType`:
-
-- `CRUD`          – ميزات إنشاء/عرض/تعديل/حذف لكيان معيّن (Full Stack).
-- `Reporting`     – تقارير ولوحات تحكم وتحليلات.
-- `Search`        – بحث وفلاتر وترتيب ونتائج.
-- `Workflow`      – حالات وموافقات وتدفقات عمل.
-- `Notifications` – إشعارات Email / SMS / Push / In-App.
-- `Integration`   – تكامل مع أنظمة أو APIs خارجية.
-- `AI`            – ميزات ذكاء صناعي (Chat, RAG, Agents, Recommendations...).
-- `Security`      – صلاحيات، أدوار، سياسات أمان، Auth / AuthZ.
-
-يمكن إضافة أنواع أخرى لاحقًا 
-
-### العلاقة الإلزامية بين FeatureType وقالب الـ KPI:
-
-- عند تحديد `FeatureType = CRUD`  
-  يجب استخدام قالب الـ KPI التالي كـ **Definition of Done** للميزة:  
-  `specifications/12-testing/kpi-crud-template.md`
-
-- عند تحديد `FeatureType = Reporting`  
-  يجب استخدام قالب الـ KPI التالي:  
-  `specifications/12-testing/kpi-reporting-template.md`
-
-- عند تحديد `FeatureType = Search`  
-  يجب استخدام قالب الـ KPI التالي:  
-  `specifications/12-testing/kpi-search-template.md`
-
-- عند تحديد `FeatureType = Workflow`  
-  يجب استخدام قالب الـ KPI التالي:  
-  `specifications/12-testing/kpi-workflow-template.md`
-
-- عند تحديد `FeatureType = Notifications`  
-  يجب استخدام قالب الـ KPI التالي:  
-  `specifications/12-testing/kpi-notifications-template.md`
-
-- عند تحديد `FeatureType = Integration`  
-  يجب استخدام قالب الـ KPI التالي:  
-  `specifications/12-testing/kpi-integration-template.md`
-
-- عند تحديد `FeatureType = AI`  
-  يجب استخدام قالب الـ KPI التالي:  
-  `specifications/12-testing/kpi-ai-template.md`
-
-- عند تحديد `FeatureType = Security`  
-  يجب استخدام قالب الـ KPI التالي:  
-  `specifications/12-testing/kpi-security-template.md`
----
-
-## 2. نظرة عامة – جدول الميزات
-
-املأ هذا الجدول لكل Feature رئيسية في المشروع.
-
-- **FeatureId**: معرف قصير ثابت (FEAT-XXXX).
-- **FeatureName**: اسم الميزة بشكل مفهوم للبشر.
-- **FeatureType**: أحد الأنواع المذكورة أعلاه.
-- **Summary**: ملخّص قصير (سطر واحد) لوظيفة الميزة.
-- **Personas**: من سيستخدم هذه الميزة؟ (User, Admin, Owner, Broker, ...).
-- **Requirements**: معرفات المتطلبات المرتبطة (FR-01, NFR-02, ... إن وُجدت).
-- **SpecFolders**: المجلدات/الملفات في `specifications/*` التي تتعلق بهذه الميزة.
-- **Priority**: أولوية التنفيذ (P0, P1, P2, ...).
-- **Status**: حالة الميزة (Planned, In-Progress, Done, Deprecated, ...).
-
-> 👇 النموذج التالي يحتوي صفًا واحدًا **مثالًا فقط**.
-> عدّل القيم أو انسخ الصف وأضف صفوفًا جديدة لكل ميزة.
-
-| FeatureId      | FeatureName        | FeatureType | Summary                                      | Personas         | Requirements      | SpecFolders                             | Priority | Status      |
-|----------------|--------------------|-------------|----------------------------------------------|------------------|-------------------|------------------------------------------|----------|------------|
-| FEAT-001-EXAMPLE01 | Example Feature    | CRUD        | مثال لميزة CRUD كاملة (إنشاء/عرض/تعديل/حذف) | Admin, User      | FR-EX-01, FR-EX-02 | 04-domain, 07-api, 08-ui                | P1       | Planned    |
-
-أضف الصفوف الحقيقية هنا أسفل المثال ↑.
+## 1) Feature Types
+- `UX`            – أساسيات الواجهة والتنقل/الهيكل.
+- `Landing`       – صفحات عامة قبل تسجيل الدخول.
+- `Security`      – AuthN/AuthZ, Roles, Policies.
+- `CRUD`          – إنشاء/عرض/تعديل/حذف لكيانات.
+- `Workflow`      – موافقات وحالات وتدفقات.
+- `Search`        – بحث/فلترة/ترتيب.
+- `Notifications` – In-app + Email.
+- `Reporting`     – تقارير ولوحات.
+- `Integration`   – تكاملات خارجية (مثل الدفع).
 
 ---
 
-## 3. تفاصيل الميزات (Feature Details)
+## 2) Overview Table
 
-اكتب سكشن منفصل لكل Feature، بنفس القالب التالي.
-يمكنك نسخ الـ Template ولصقه لكل ميزة ثم تعبئته.
-
-> لا تحذف هذا القالب؛ فقط انسخه أسفله لكل ميزة.
-
-### Template – انسخ هذا البلوك لكل ميزة جديدة
-
-```md
-### <FeatureId> – <FeatureName>
-**Type:** <FeatureType>  
-**Summary:** وصف مختصر للميزة في سطر أو سطرين يوضح الهدف التجاري.  
-**Personas:** اذكر المستخدمين أو الأدوار المستهدفة (مثال: Admin, Owner, Buyer).  
-**Requirements:** FR-xx, NFR-xx (إن وُجدت) أو اتركها فارغة مؤقتًا.  
-**Spec Folders / Files:**  
-- `specifications/XX-something/...`
-- `specifications/YY-other/...`
-
-**Dependencies / Relations:**  
-- تعتمد على: (مثال: FEAT-AUTH, FEAT-SEARCH)  
-- تؤثر على: (مثال: FEAT-REPORTS)
-
-**KPI Template:**  
-- إذا كان النوع `CRUD` → استخدم: `specifications/12-testing/kpi-crud-template.md`  
-- إذا كان `Reporting` → استخدم: `specifications/12-testing/kpi-reporting-template.md`  
-- إذا كان `Search` → استخدم: `specifications/12-testing/kpi-search-template.md`  
-- إذا كان `Workflow` → استخدم: `specifications/12-testing/kpi-workflow-template.md`  
-- إذا كان `Notifications` → استخدم: `specifications/12-testing/kpi-notifications-template.md`  
-- إذا كان `Integration` → استخدم: `specifications/12-testing/kpi-integration-template.md`  
-- إذا كان `AI` → استخدم: `specifications/12-testing/kpi-ai-template.md`  
-- إذا كان `Security` → استخدم: `specifications/12-testing/kpi-security-template.md`
-
-**Recommended Feature Prompt (Cursor):**  
-- `cursor_prompt_feature-<type>.txt`
-
-**Notes / Open Questions:**  
-- ضع هنا أي أسئلة أو نقاط غير محسومة بعد.
-```
+| FeatureId | FeatureName | FeatureType | Summary | Personas | SpecFolders | Priority | Status |
+|---|---|---|---|---|---|---|---|
+| FEAT-001 | UX/UI (Baseline/System) | UX | أساسيات التصميم/الهيكل/التنقل + i18n scaffolding | All | psec-kit-file/FEAT-001 | P0 | Planned |
+| FEAT-002 | Landing Page | Landing | صفحة هبوط + أقسام تعريفية + CTA للتسجيل/الدخول | Guest | psec-kit-file/FEAT-002 | P0 | Planned |
+| FEAT-003 | Email Auth (Register/Login) | Security | تسجيل ودخول عبر البريد/كلمة المرور | User | psec-kit-file/FEAT-003 | P0 | Planned |
+| FEAT-004 | Email Verification | Security | تحقق البريد وإدارة حالة التحقق | User, Admin | psec-kit-file/FEAT-004 | P0 | Planned |
+| FEAT-005 | User Profile Management | CRUD | إدارة الملف الشخصي (نبذة/اهتمامات/مهارات...) | User | psec-kit-file/FEAT-005 | P0 | Planned |
+| FEAT-006 | Admin: Set Account Type | Workflow | تحديد نوع الحساب (Founder/Investor/Advisor/Partner) من الإدارة | Admin | psec-kit-file/FEAT-006 | P0 | Planned |
+| FEAT-007 | User Dashboard | UX | لوحة المستخدم بعد تسجيل الدخول | User | psec-kit-file/FEAT-007 | P1 | Planned |
+| FEAT-008 | Create Project (Public/Private) | CRUD | إنشاء مشروع وتحديد عام/خاص | Founder | psec-kit-file/FEAT-008 | P0 | Planned |
+| FEAT-010 | Project Review Submission | Workflow | إرسال المشروع للمراجعة قبل النشر | Founder, Admin | psec-kit-file/FEAT-010 | P0 | Planned |
+| FEAT-011 | Project Status Lifecycle | Workflow | حالات: Draft/UnderReview/Publishable (+Private) | Founder, Admin | psec-kit-file/FEAT-011 | P0 | Planned |
+| FEAT-012 | Search Only Publishable Projects | Search | قصر نتائج البحث على المشاريع القابلة للنشر | Investor, Advisor, Partner | psec-kit-file/FEAT-012 | P0 | Planned |
+| FEAT-013 | Project PDF Attachments | Integration | رفع/تحميل مرفقات PDF للمشروع | Founder, Admin | psec-kit-file/FEAT-013 | P1 | Planned |
+| FEAT-014 | Lock Project Editing After Publish | Workflow | منع تعديل المشروع بعد النشر (حذف فقط) | Founder | psec-kit-file/FEAT-014 | P1 | Planned |
+| FEAT-015 | Trending Projects | Reporting | عرض الأكثر تفاعلًا (تعريف قابل للتعديل) | User | psec-kit-file/FEAT-015 | P2 | Planned |
+| FEAT-016 | Project Search & Filters | Search | بحث/فلترة/ترتيب المشاريع | Investor, Advisor, Partner | psec-kit-file/FEAT-016 | P0 | Planned |
+| FEAT-017 | Proposals & Invites | Workflow | إرسال/استقبال عروض/دعوات بين الأدوار | User | psec-kit-file/FEAT-017 | P0 | Planned |
+| FEAT-018 | Accept/Reject/Negotiate | Workflow | حالات الطلب (مرسل/تفاوض/مقبول/مرفوض) | User | psec-kit-file/FEAT-018 | P0 | Planned |
+| FEAT-019 | Negotiation Log (Chat linked) | Workflow | سجل تفاوض قبل القبول مرتبط بالطلب | User | psec-kit-file/FEAT-019 | P0 | Planned |
+| FEAT-020 | Text Chat | CRUD | دردشة نصية بين المستخدمين | User | psec-kit-file/FEAT-020 | P0 | Planned |
+| FEAT-021 | Offers/Invites Status Board | Reporting | لوحة حالة للطلبات لكل مستخدم | User | psec-kit-file/FEAT-021 | P1 | Planned |
+| FEAT-022 | Web Notifications | Notifications | إشعارات داخل المنصة للأحداث | User | psec-kit-file/FEAT-022 | P1 | Planned |
+| FEAT-023 | Email Notifications | Notifications | تنبيهات بريد للأحداث | User | psec-kit-file/FEAT-023 | P1 | Planned |
+| FEAT-024 | Admin: Users Management | CRUD | إدارة المستخدمين | Admin | psec-kit-file/FEAT-024 | P1 | Planned |
+| FEAT-025 | Admin: Projects Management | CRUD | إدارة المشاريع (مراجعة/اعتماد/رفض) | Admin | psec-kit-file/FEAT-025 | P0 | Planned |
+| FEAT-026 | Admin: Proposals/Invites Management | CRUD | إدارة الطلبات | Admin | psec-kit-file/FEAT-026 | P2 | Planned |
+| FEAT-027 | Admin: Notifications Management | CRUD | إدارة قوالب/سجل الإشعارات | Admin | psec-kit-file/FEAT-027 | P2 | Planned |
+| FEAT-028 | Admin: Banners Management | CRUD | إدارة بانرات الصفحة | Admin | psec-kit-file/FEAT-028 | P2 | Planned |
+| FEAT-029 | Admin: Reports | Reporting | تقارير تشغيلية | Admin | psec-kit-file/FEAT-029 | P2 | Planned |
+| FEAT-030 | Payment Gateway Integration | Integration | ربط بوابة دفع (مؤجل/قابل للتفعيل لاحقًا) | User, Admin | psec-kit-file/FEAT-030 | P3 | Planned |
+| FEAT-031 | Plans Upgrade (free MVP) | Workflow | ترقية خطة (منطق جاهز حتى لو مجاني) | User, Admin | psec-kit-file/FEAT-031 | P3 | Planned |
+| FEAT-032 | Admin: Transactions | CRUD | إدارة المعاملات | Admin | psec-kit-file/FEAT-032 | P3 | Planned |
 
 ---
 
-## 4. مثال عملي مكتمل لميزة واحدة (يمكنك حذفه أو تعديله)
+## 3) Feature Details (initial)
 
-المثال التالي فقط لتوضيح كيفية تعبئة التفاصيل. غيّره بما يناسب مشروعك.
+### FEAT-001 – UX/UI (Baseline/System)
+**Type:** UX  
+**Summary:** بناء أساس واجهة Angular (Layout, Navigation, Routing, Design system) + إعداد i18n عربي/إنجليزي بشكل مبدئي.  
+**Personas:** All  
+**Spec Folders / Files:**
+- `psec-kit-file/FEAT-001/*`
 
-### FEAT-CITIES – City Management
-**Type:** CRUD  
-**Summary:** إدارة المدن (إضافة مدينة جديدة، تعديل بيانات مدينة، حذف/تعطيل مدينة، عرض قائمة المدن مع البحث والفلاتر البسيطة).  
-**Personas:** Admin  
-**Requirements:** FR-10, FR-11 (أمثلة؛ غيّرها بما يناسبك)  
-**Spec Folders / Files:**  
-- `specifications/04-domain/locations.md`  
-- `specifications/07-api/cities-api.md`  
-- `specifications/08-ui/cities-screens.md`  
+**Dependencies / Relations:**
+- يعتمد عليه معظم الميزات اللاحقة.
 
-**Dependencies / Relations:**  
-- تعتمد على: FEAT-AUTH (لمنع الوصول لغير المديرين)  
-- تؤثر على: FEAT-REPORTS (تقارير تعتمد على المدن)، FEAT-SEARCH (بحث حسب المدينة)  
+**KPI Template:** (خاص بـ UX – سنستخدم تعريف إنجاز داخلي: صفحات تعمل + تنقل + RTL/LTR).  
 
-**KPI Template:**  
-- `specifications/12-testing/kpi-crud-template.md`
-
-**Recommended Feature Prompt (Cursor):**  
-- `cursor_prompt_feature-crud.txt`
-
-**Notes / Open Questions:**  
-- هل نحتاج حقل كود المدينة (Code) موحّد مع نظام خارجي؟  
-- هل نسمح بالتعطيل بدل الحذف النهائي؟
+**Notes / Open Questions:**
+- سيتم اعتماد Angular + ABP default theme كبداية مع تخصيص بسيط.
 
 ---
-
-بعد هذا المثال، ابدأ بإضافة سكاشن حقيقية لكل Feature في مشروعك بنفس القالب.
-يمكنك ترتيبها حسب الأولوية أو حسب الدومين (Auth, Users, Search, Reporting, AI, Integration, ...).
