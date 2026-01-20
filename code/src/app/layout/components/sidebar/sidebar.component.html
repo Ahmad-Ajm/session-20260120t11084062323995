@@ -1,0 +1,17 @@
+<aside class="sidebar" [class.sidebar--open]="isMobileOpen">
+  <div class="sidebar__overlay" (click)="closeMobile()"></div>
+
+  <nav class="sidebar__panel" aria-label="Sidebar navigation">
+    <a
+      *ngFor="let item of items"
+      class="sidebar__link"
+      routerLinkActive="is-active"
+      [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+      [routerLink]="item.path"
+      (click)="closeMobile()"
+    >
+      <span class="sidebar__icon" aria-hidden="true">•</span>
+      <span>{{ item.labelKey | translate }}</span>
+    </a>
+  </nav>
+</aside>
