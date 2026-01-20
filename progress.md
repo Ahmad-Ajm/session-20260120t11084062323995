@@ -9,7 +9,7 @@
 
 | Feature | clarify | plan | specify | analyze | tasks | SpecKit Status | Build-App Status | CI |
 |---|---|---|---|---|---|---|---|---|
-| FEAT-001 | Done | Done | Done | Done | Done | Done | Blocked(Network/DNS -> max iterations) | NotRun |
+| FEAT-001 | Done | Done | Done | Done | Done | Done | CodeDone | Blocked(CI tool / GitHub Actions access) |
 
 ---
 
@@ -45,23 +45,33 @@
 - تأكدت أن SpecKit لميزة FEAT-001 مكتمل: `clarify/plan/specify/analyze/tasks` = Done.
 - إعادة تشغيل Build-App لميزة FEAT-001 لإكمال ملفات الواجهة.
 - Build-App توقف برسالة: `Agent stopped due to max iterations`.
-- تشخيص الفلو أكد أن السبب الجذري ما يزال شبكة/DNS: `getaddrinfo EAI_AGAIN api.github.com` أثناء خطوة جلب الملفات من GitHub داخل Build-App، مما يدفع الـAgent لمحاولات متكررة حتى الوصول لحد التكرارات.
+- تشخيص الفلو أكد أن السبب الجذري شبكة/DNS: `getaddrinfo EAI_AGAIN api.github.com` أثناء خطوة جلب الملفات من GitHub داخل Build-App.
+
+## ✅ ما تم إنجازه (Attempt 3)
+- إعادة تشغيل Build-App على FEAT-001 وتأكد أن **تنفيذ FEAT-001 موجود فعليًا داخل `code/`** (Layout + Routing + i18n + RTL/LTR + persistence).
+- المشكلة الحالية لم تعد DNS: أصبح العائق في **تشغيل/فحص CI** عبر الأداة.
+- محاولات CI عبر أداة `CI_RUN_AND_INSPECT` فشلت تسلسليًا:
+  1) `No run_id found` (dispatch delayed/عدم القدرة على إيجاد الـ run)
+  2) `GitHub REST API returned 404 Not Found` (غالبًا صلاحيات token أو repo/endpoint)
+  3) أداة رجعت: `JSON Output contains invalid JSON` (خلل parsing/تجميع contract داخل فلو CI)
+- تشخيص `github-ci-orchestrator` أكد:
+  - عقدة داخل n8n تُنتج JSON غير صالح (Set: AI Decision Contract) وتمنع اكتمال الفلو.
+  - حتى بعد إصلاح عقدة JSON: يوجد فشل CI فعلي بسبب إعداد workflow: `cache-dependency-path: code/package-lock.json` (المسار غير موجود).
 
 ---
 
 ## ⚠️ العوائق الحالية
-- انقطاع/خلل DNS مؤقت يمنع Build-App من قراءة/كتابة ملفات GitHub بشكل موثوق.
-- نتيجة ذلك: توقف Build-App وعدم القدرة على إكمال FEAT-001 في هذا التشغيل.
+- **CI Blocked** بسبب مشاكل في فلو/أداة CI (invalid JSON) و/أو صلاحيات GitHub Actions API (404) + إعداد workflow يحتاج تصحيح لمسار `package-lock.json`.
 
 ---
 
 ## ⏭️ الخطوة التالية (مباشرة)
-1) إعادة المحاولة لاحقًا لتشغيل Build-App على FEAT-001 عند استقرار DNS.
-2) أو تنفيذ إصلاح سريع في فلو Build-App: retries/backoff + fail-fast عند أخطاء الشبكة.
-3) بعد اكتمال كتابة ملفات FEAT-001: تشغيل CI (إن لم يقدّم Build-App تقرير نجاح واضح).
+1) إصلاح فلو `github-ci-orchestrator` (عقدة Set JSON) أو تشغيل CI بطريقة بديلة.
+2) مراجعة `.github/workflows/ci.yml` لتصحيح `cache-dependency-path` ليتوافق مع بنية المشروع (أو تعطيل cache-dependency-path).
+3) إعادة تشغيل CI ثم اعتماد FEAT-001 كمكتملة.
 
 ---
 
 ## 🔄 آخر تحديث
 - التاريخ: 2026-01-20
-- Attempt: 2
+- Attempt: 3
