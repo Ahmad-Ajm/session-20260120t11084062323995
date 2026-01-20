@@ -1,93 +1,118 @@
 # Tasks – FEAT-001
 
 ## 1. Overview
-- الهدف: إنشاء Baseline UI في Angular (ضمن ABP) يشمل Layout + Navigation + Routing + i18n (ar/en) + RTL/LTR.
-- المهام أدناه قابلة للتنفيذ مباشرة بواسطة Build-App، مع مسارات مستهدفة قابلة للتكيّف حسب هيكل مشروع ABP المُولّد.
+- الهدف: بناء Baseline UI في Angular (ضمن ABP) يشمل:
+  1) Layout عام (Topbar/Sidebar/Content)
+  2) Routing placeholders
+  3) i18n عربي/إنجليزي
+  4) RTL/LTR
+- القيود: بدون منطق أعمال، بدون صفحات ميزات أخرى.
 
 ## 2. Task List
 
-### Phase 1: Frontend Baseline (Layout + Routing)
-- [ ] T-FEAT-001-001 Verify ABP Angular app runs locally (Target: `angular/`)
-  - Ensure `npm ci` / `npm install` + `npm start` works.
+### Phase 1: Project Check + Layout Skeleton
+- [ ] T-FEAT-001-001 تشغيل مشروع ABP Angular والتأكد أنه يعمل محلياً (Target: `angular/`)
+  - خطوات: `npm ci` (أو `npm install`) ثم `npm start`.
+  - ناتج متوقع: التطبيق يعمل بدون أخطاء build.
 
-- [ ] T-FEAT-001-002 Create Layout module and shell components (Target: `angular/src/app/layout/`)
-  - Create:
+- [ ] T-FEAT-001-002 إنشاء Layout module ومكونات Shell الأساسية (Target: `angular/src/app/layout/`)
+  - أنشئ:
     - `layout.module.ts`
     - `components/app-shell/app-shell.component.{ts,html,scss}`
     - `components/topbar/topbar.component.{ts,html,scss}`
     - `components/sidebar/sidebar.component.{ts,html,scss}`
-  - Shell layout: Topbar + Sidebar + `<router-outlet>`.
+    - (اختياري) `components/footer/footer.component.{ts,html,scss}`
+  - ناتج متوقع: `AppShellComponent` يعرض Topbar + Sidebar + `<router-outlet>`.
 
-- [ ] T-FEAT-001-003 Add placeholder pages (Target: `angular/src/app/pages/`)
-  - Create:
-    - `home/home.component.{ts,html,scss}` (simple text)
-    - `dashboard/dashboard.component.{ts,html,scss}` (simple text)
+- [ ] T-FEAT-001-003 إنشاء صفحات placeholder (Target: `angular/src/app/pages/`)
+  - أنشئ:
+    - `home/home.component.{ts,html,scss}`
+    - `dashboard/dashboard.component.{ts,html,scss}`
     - `not-found/not-found.component.{ts,html,scss}`
+  - محتوى الصفحة: عنوان ونص بسيط (مع مفاتيح ترجمة).
 
-- [ ] T-FEAT-001-004 Configure app routing with NotFound fallback (Target: `angular/src/app/app-routing.module.ts`)
-  - Routes (example):
+### Phase 2: Routing Baseline
+- [ ] T-FEAT-001-004 إعداد routing الأساسي + NotFound (Target: `angular/src/app/app-routing.module.ts`)
+  - Routes المقترحة:
     - `''` -> `HomeComponent`
     - `'app'` -> `AppShellComponent` (children: `dashboard`)
     - `'not-found'` -> `NotFoundComponent`
     - `'**'` -> redirect to `'not-found'`
+  - ناتج متوقع: `/app/dashboard` يعمل داخل الـ shell.
 
-- [ ] T-FEAT-001-005 Implement sidebar navigation items (Target: `angular/src/app/layout/services/nav.service.ts` + Sidebar template)
-  - Define `NavItem` interface (labelKey, path, icon?).
-  - Items:
-    - Home (`/`)
-    - Dashboard (`/app/dashboard`)
-  - Bind to routerLink.
+- [ ] T-FEAT-001-005 إضافة عناصر التنقل (NavItems) وربطها بالـ sidebar (Target: `angular/src/app/layout/services/nav.service.ts` أو `nav-items.ts`)
+  - تعريف interface `NavItem`:
+    - `labelKey: string`
+    - `path: string`
+    - `icon?: string`
+  - عناصر مبدئية:
+    - Home: `/`
+    - Dashboard: `/app/dashboard`
+  - ناتج متوقع: الضغط على عناصر القائمة يغير route.
 
-### Phase 2: i18n (ar/en) + Language Switcher
-- [ ] T-FEAT-001-006 Add i18n translation files (Target: `angular/src/assets/i18n/en.json`, `angular/src/assets/i18n/ar.json`)
-  - Keys minimum:
+### Phase 3: i18n (ar/en)
+- [ ] T-FEAT-001-006 إضافة ملفات ترجمة en/ar (Target: `angular/src/assets/i18n/en.json`, `angular/src/assets/i18n/ar.json`)
+  - مفاتيح حد أدنى:
     - `App.Name`
     - `Nav.Home`, `Nav.Dashboard`
-    - `Lang.English`, `Lang.Arabic`, `Lang.Switch`
-    - `Common.NotFound`
+    - `Lang.English`, `Lang.Arabic`
+    - `Common.NotFound`, `Common.Home`, `Common.Dashboard`
 
-- [ ] T-FEAT-001-007 Create UiLanguageService for language + persistence (Target: `angular/src/app/core/services/ui-language.service.ts`)
-  - Methods:
+- [ ] T-FEAT-001-007 تفعيل استخدام مفاتيح الترجمة في مكونات Layout/Pages (Target: templates HTML)
+  - استخدم `| translate` على الأقل في:
+    - عنوان Topbar
+    - عناصر Sidebar
+    - عناوين صفحات placeholders
+
+### Phase 4: Language Switcher + Persistence
+- [ ] T-FEAT-001-008 إنشاء خدمة UI للغة والاتجاه (Target: `angular/src/app/core/services/ui-language.service.ts`)
+  - Implement:
+    - `language$` (BehaviorSubject)
     - `getCurrent(): 'en'|'ar'`
-    - `setLanguage(lang: 'en'|'ar'): void`
-    - `language$`: observable/behavior subject
-  - Persistence key: `projment_lang` in localStorage.
-  - Default logic: stored value else browser language startsWith('ar') => 'ar' else 'en'.
+    - `setLanguage(lang: 'en'|'ar')`
+  - Persistence:
+    - LocalStorage key: `projment_lang`
+    - Default: saved > browser startsWith('ar') => ar else en
 
-- [ ] T-FEAT-001-008 Wire language switcher in Topbar (Target: `topbar.component.*`)
-  - Add dropdown/button to switch language.
-  - Use translate pipe for labels.
-  - On click call `UiLanguageService.setLanguage(...)`.
+- [ ] T-FEAT-001-009 ربط زر/قائمة تبديل اللغة في Topbar (Target: `topbar.component.*`)
+  - UI: Dropdown أو زرين (AR/EN).
+  - عند التبديل: استدعاء `UiLanguageService.setLanguage(...)`.
+  - ناتج متوقع: النصوص تتغير فوراً.
 
-### Phase 3: RTL/LTR Scaffolding + Styles
-- [ ] T-FEAT-001-009 Apply RTL/LTR on language change (Target: `ui-language.service.ts`)
-  - On `setLanguage`:
+### Phase 5: RTL/LTR + Styling
+- [ ] T-FEAT-001-010 تطبيق RTL/LTR على مستوى document (Target: `ui-language.service.ts`)
+  - عند setLanguage:
     - `document.documentElement.lang = lang`
     - `document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'`
-  - Ensure executed on app bootstrap (constructor/init in `AppComponent` or service init).
+  - تهيئة عند bootstrap:
+    - استدعاء `setLanguage(getCurrent())` في init مناسب (مثلاً `AppComponent.ngOnInit` أو constructor في service مع احتراز).
 
-- [ ] T-FEAT-001-010 Add minimal RTL styles to support layout (Target: `angular/src/styles.scss` or `angular/src/app/layout/layout.scss`)
-  - Ensure sidebar aligns properly in RTL.
-  - Ensure padding/margins/chevrons don’t break.
-  - Avoid heavy RTL frameworks; keep minimal overrides.
+- [ ] T-FEAT-001-011 إضافة CSS fixes بسيطة لـ RTL للـ layout (Target: `angular/src/styles.scss` أو scss داخل layout)
+  - أهداف التعديل:
+    - محاذاة sidebar حسب الاتجاه
+    - padding/margin متناسقة
+  - ناتج متوقع: عند `dir=rtl` لا ينكسر layout.
 
-### Phase 4: Quality Gates
-- [ ] T-FEAT-001-011 Lint/build check (Target: `angular/`)
-  - Run `npm run lint` (if configured) and `npm run build`.
+### Phase 6: Quality Gates
+- [ ] T-FEAT-001-012 تشغيل lint/build (Target: `angular/`)
+  - `npm run lint` (إذا متوفر)
+  - `npm run build`
 
-- [ ] T-FEAT-001-012 Manual verification checklist (Target: running app)
-  - Verify:
-    1. Routing works: `/`, `/app/dashboard`, unknown route -> NotFound.
-    2. Navigation links route correctly.
-    3. Switching language updates labels immediately.
-    4. Reload keeps chosen language.
-    5. RTL applies when `ar` selected (dir=rtl) and layout still usable.
+- [ ] T-FEAT-001-013 تحقق يدوي نهائي (Target: تشغيل التطبيق)
+  - Checklist:
+    1. `/` يعمل
+    2. `/app/dashboard` يعمل داخل shell
+    3. مسار عشوائي -> NotFound
+    4. تبديل اللغة يغير النصوص
+    5. reload يحافظ على اللغة
+    6. العربية تجعل `dir=rtl` والإنجليزية `dir=ltr`
 
 ## 3. Dependencies Graph
-- T-FEAT-001-004 depends on T-FEAT-001-002 and T-FEAT-001-003.
-- T-FEAT-001-008 depends on T-FEAT-001-006 and T-FEAT-001-007.
-- T-FEAT-001-009 depends on T-FEAT-001-007.
+- T-FEAT-001-004 يعتمد على T-FEAT-001-002 و T-FEAT-001-003.
+- T-FEAT-001-005 يعتمد على T-FEAT-001-004.
+- T-FEAT-001-009 يعتمد على T-FEAT-001-008.
+- T-FEAT-001-010 يعتمد على T-FEAT-001-008.
 
 ## 4. Execution Notes
-- قد تختلف أماكن ملفات routing/translation في قالب ABP؛ في هذه الحالة يتم تعديل المسارات المستهدفة لتطابق البنية الفعلية، مع الحفاظ على نفس المخرجات (Layout/Routing/i18n/RTL).
-- لا تضف أي صفحات تخص ميزات أخرى؛ استخدم placeholders فقط.
+- قد تختلف مسارات `angular/src/...` حسب قالب ABP المستخدم؛ في هذه الحالة يتم تكييف الـ targets مع الحفاظ على نفس المخرجات (Layout/Routing/i18n/RTL).
+- ممنوع إضافة أي صفحات تخص ميزات أخرى؛ placeholders فقط.
