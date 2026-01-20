@@ -1,0 +1,38 @@
+{
+  "App": {
+    "Name": "بروجمنت"
+  },
+  "Nav": {
+    "Landing": "الرئيسية",
+    "Login": "تسجيل الدخول",
+    "Register": "إنشاء حساب",
+    "Dashboard": "لوحة التحكم"
+  },
+  "Lang": {
+    "English": "الإنجليزية",
+    "Arabic": "العربية"
+  },
+  "Common": {
+    "Welcome": "مرحبًا",
+    "NotFound": "الصفحة غير موجودة",
+    "GoHome": "العودة للرئيسية"
+  },
+  "Pages": {
+    "Landing": {
+      "Title": "الرئيسية",
+      "Description": "هذه صفحة Placeholder للواجهة العامة."
+    },
+    "Login": {
+      "Title": "تسجيل الدخول",
+      "Description": "هذه صفحة Placeholder لتسجيل الدخول."
+    },
+    "Register": {
+      "Title": "إنشاء حساب",
+      "Description": "هذه صفحة Placeholder لإنشاء حساب."
+    },
+    "Dashboard": {
+      "Title": "لوحة التحكم",
+      "Description": "هذه صفحة Placeholder للوحة التحكم (داخل الـ Shell)."
+    }
+  }
+}
